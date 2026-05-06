@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections; // Needed for Coroutines!
-using TMPro; // Important: Use this if using TextMeshPro!
-
+using System.Collections; // Needed for Coroutines
+using TMPro; // Important: Use this if using TextMeshPro
+using UnityEngine.SceneManagement; // <--- Needed for Scene Management
 public class QuizManager : MonoBehaviour
 {
     public QuestionData[] questions; // A list of questions you fill in the Inspector
@@ -13,14 +13,21 @@ public class QuizManager : MonoBehaviour
     
     public TextMeshProUGUI scoreDisplay; // Drag your Score Text here
     private int currentScore = 0;
-
+    
+    public GameObject endScreenPanel; // End Panel Display
+    public TextMeshProUGUI finalScoreText; //
+    public TextMeshProUGUI questionNumberText;
     void Start()
     {
         DisplayQuestion();
+        questionNumberText.text = "Question " + (currentQuestionIndex + 1);
     }
 
     void DisplayQuestion()
     {
+        // Set the text for the question number
+        questionNumberText.text = "Question " + (currentQuestionIndex + 1);
+        
         // Set the text for the question
         questionDisplay.text = questions[currentQuestionIndex].questionText;
 
@@ -76,7 +83,14 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
-            questionDisplay.text = "Quiz Finished!";
+            endScreenPanel.SetActive(true);
+            finalScoreText.text = "Score: " + currentScore;
         }
+    }
+    
+    public void RestartGame()
+    {
+        // This line tells Unity to get the currently active scene and load it again
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
