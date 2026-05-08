@@ -19,7 +19,8 @@ public class QuizManager : MonoBehaviour
     public TextMeshProUGUI questionNumberText;
     void Start()
     {
-        DisplayQuestion();
+        ShuffleQuestions(); // Shuffle first!
+        DisplayQuestion();  // Then show the first (now random) question
         questionNumberText.text = "Question " + (currentQuestionIndex + 1);
     }
 
@@ -92,5 +93,17 @@ public class QuizManager : MonoBehaviour
     {
         // This line tells Unity to get the currently active scene and load it again
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
+    void ShuffleQuestions()
+    {
+        // Go through the array and swap each element with a random one
+        for (int i = 0; i < questions.Length; i++)
+        {
+            QuestionData temp = questions[i];
+            int randomIndex = Random.Range(i, questions.Length);
+            questions[i] = questions[randomIndex];
+            questions[randomIndex] = temp;
+        }
     }
 }
